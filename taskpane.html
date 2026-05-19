@@ -8,111 +8,81 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0d0d0f;
-      --surface: #16161a;
-      --surface2: #1e1e24;
-      --border: #2a2a35;
-      --accent: #7c6af7;
-      --accent2: #f7c26a;
-      --text: #e8e8f0;
-      --muted: #6b6b80;
-      --success: #5cf5a0;
-      --danger: #f76a6a;
-      --radius: 10px;
-      --font-ui: 'Syne', sans-serif;
-      --font-mono: 'DM Mono', monospace;
+      --bg: #0d0d0f; --surface: #16161a; --surface2: #1e1e24;
+      --border: #2a2a35; --accent: #7c6af7; --accent2: #f7c26a;
+      --text: #e8e8f0; --muted: #6b6b80; --success: #5cf5a0;
+      --danger: #f76a6a; --radius: 10px;
+      --font-ui: 'Syne', sans-serif; --font-mono: 'DM Mono', monospace;
     }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-ui);
-      font-size: 13px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      background: var(--bg); color: var(--text); font-family: var(--font-ui);
+      font-size: 13px; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
     }
-
-    /* ── Header ── */
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px 10px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
+      background: var(--surface); flex-shrink: 0;
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .logo { display: flex; align-items: center; gap: 8px; }
     .logo-icon {
       width: 28px; height: 28px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
+      border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px;
     }
     .logo-text { font-size: 15px; font-weight: 800; letter-spacing: -0.3px; }
     .logo-text span { color: var(--accent); }
-
-    .header-actions { display: flex; gap: 6px; }
+    .outlook-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 10px; background: rgba(92,245,160,0.12);
+      color: var(--success); border: 1px solid rgba(92,245,160,0.25);
+    }
+    .outlook-badge.offline { background: rgba(107,107,128,0.15); color: var(--muted); border-color: var(--border); }
     .btn-icon {
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--muted); border-radius: 7px;
-      padding: 5px 9px; cursor: pointer; font-size: 11px;
-      font-family: var(--font-ui); font-weight: 600; letter-spacing: 0.3px;
-      transition: all 0.15s;
+      background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+      border-radius: 7px; padding: 5px 9px; cursor: pointer; font-size: 11px;
+      font-family: var(--font-ui); font-weight: 600; letter-spacing: 0.3px; transition: all 0.15s;
     }
     .btn-icon:hover { background: var(--border); color: var(--text); }
-    .btn-icon.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-    /* ── Tab bar ── */
     .tabs {
-      display: flex;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      display: flex; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
     .tab {
-      flex: 1; padding: 9px 0; text-align: center;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-      text-transform: uppercase; cursor: pointer;
-      color: var(--muted); border-bottom: 2px solid transparent;
-      transition: all 0.15s;
+      flex: 1; padding: 9px 0; text-align: center; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer;
+      color: var(--muted); border-bottom: 2px solid transparent; transition: all 0.15s;
     }
     .tab:hover { color: var(--text); }
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-    /* ── Panels ── */
     .panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .panel.active { display: flex; }
-
-    /* ── Compose Panel ── */
     .compose-body { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
-
     .section-label {
       font-size: 10px; font-weight: 700; letter-spacing: 1px;
       text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
     }
-
-    .thread-preview {
+    .thread-box {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 10px 12px;
-      font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-      max-height: 90px; overflow-y: auto; line-height: 1.6;
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .thread-preview {
+      padding: 10px 12px; font-family: var(--font-mono); font-size: 11px;
+      color: var(--muted); max-height: 80px; overflow-y: auto; line-height: 1.6;
       white-space: pre-wrap; word-break: break-word;
     }
     .thread-preview.loaded { color: var(--text); }
-
-    .tone-row {
-      display: flex; gap: 6px; flex-wrap: wrap;
+    .thread-input {
+      width: 100%; background: transparent; border: none; outline: none;
+      border-top: 1px solid var(--border); padding: 8px 12px;
+      font-family: var(--font-mono); font-size: 11px; color: var(--text);
+      resize: none; min-height: 60px; line-height: 1.6;
     }
+    .thread-input::placeholder { color: var(--muted); }
+    .thread-hint {
+      padding: 5px 12px 8px; font-size: 10px; color: var(--muted);
+      border-top: 1px solid var(--border); font-family: var(--font-mono);
+    }
+    .tone-row { display: flex; gap: 6px; flex-wrap: wrap; }
     .tone-btn {
       padding: 5px 11px; border-radius: 20px; font-size: 11px;
       font-family: var(--font-ui); font-weight: 600; cursor: pointer;
@@ -121,27 +91,19 @@
     }
     .tone-btn:hover { border-color: var(--accent); color: var(--text); }
     .tone-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
-
     .reply-box {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px;
-      font-family: var(--font-mono); font-size: 12px; color: var(--text);
-      min-height: 120px; resize: none; width: 100%;
-      line-height: 1.7; outline: none;
-      transition: border-color 0.15s;
+      border-radius: var(--radius); padding: 12px; font-family: var(--font-mono);
+      font-size: 12px; color: var(--text); min-height: 130px; resize: none; width: 100%;
+      line-height: 1.7; outline: none; transition: border-color 0.15s;
     }
     .reply-box:focus { border-color: var(--accent); }
     .reply-box::placeholder { color: var(--muted); }
-
     .compose-footer {
-      padding: 10px 16px 14px;
-      display: flex; flex-direction: column; gap: 8px;
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
+      padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 8px;
+      border-top: 1px solid var(--border); flex-shrink: 0;
     }
-
     .btn-row { display: flex; gap: 8px; }
-
     .btn {
       flex: 1; padding: 9px 14px; border-radius: var(--radius);
       font-family: var(--font-ui); font-size: 12px; font-weight: 700;
@@ -155,7 +117,8 @@
     .btn-success { background: var(--success); color: #0d0d0f; }
     .btn-success:hover { background: #44e08a; }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
+    .btn-copy { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-copy:hover { background: var(--border); }
     .status-bar {
       font-size: 10px; color: var(--muted); text-align: center;
       font-family: var(--font-mono); min-height: 14px;
@@ -163,108 +126,88 @@
     .status-bar.ok { color: var(--success); }
     .status-bar.err { color: var(--danger); }
     .status-bar.loading { color: var(--accent2); }
-
-    /* ── Library Panel ── */
+    /* Library */
     .library-body { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
-    .empty-state {
-      text-align: center; color: var(--muted); padding: 40px 20px;
-      font-size: 12px; line-height: 1.8;
-    }
+    .empty-state { text-align: center; color: var(--muted); padding: 40px 20px; font-size: 12px; line-height: 1.8; }
     .empty-state .big { font-size: 32px; margin-bottom: 8px; }
-
     .example-card {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px;
-      display: flex; flex-direction: column; gap: 8px;
+      border-radius: var(--radius); padding: 12px; display: flex; flex-direction: column; gap: 8px;
     }
-    .card-meta {
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; }
     .card-tag {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-      text-transform: uppercase; color: var(--accent2);
-      background: rgba(247,194,106,0.12); padding: 3px 8px; border-radius: 20px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--accent2); background: rgba(247,194,106,0.12); padding: 3px 8px; border-radius: 20px;
     }
     .card-date { font-size: 10px; color: var(--muted); font-family: var(--font-mono); }
+    .card-subject { font-size: 11px; font-weight: 600; color: var(--text); margin-top: 2px; }
     .card-preview {
-      font-size: 11px; color: var(--muted); font-family: var(--font-mono);
-      line-height: 1.6; max-height: 60px; overflow: hidden;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      font-size: 11px; color: var(--muted); font-family: var(--font-mono); line-height: 1.6;
+      max-height: 60px; overflow: hidden; display: -webkit-box;
+      -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     }
     .card-actions { display: flex; gap: 6px; }
     .card-btn {
-      padding: 4px 10px; font-size: 10px; font-weight: 700;
-      border-radius: 6px; cursor: pointer; border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted); font-family: var(--font-ui);
-      transition: all 0.15s; letter-spacing: 0.3px;
+      padding: 4px 10px; font-size: 10px; font-weight: 700; border-radius: 6px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+      font-family: var(--font-ui); transition: all 0.15s; letter-spacing: 0.3px;
     }
     .card-btn:hover { color: var(--text); border-color: var(--muted); }
     .card-btn.del:hover { color: var(--danger); border-color: var(--danger); }
-
-    /* ── Settings Panel ── */
+    /* Settings */
     .settings-body { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 14px; }
     .setting-group { display: flex; flex-direction: column; gap: 6px; }
     .setting-label { font-size: 11px; font-weight: 700; color: var(--text); letter-spacing: 0.3px; }
     .setting-hint { font-size: 10px; color: var(--muted); line-height: 1.5; }
-
     .input-field {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 9px 12px;
-      color: var(--text); font-family: var(--font-mono); font-size: 12px;
+      background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 9px 12px; color: var(--text); font-family: var(--font-mono); font-size: 12px;
       width: 100%; outline: none; transition: border-color 0.15s;
     }
     .input-field:focus { border-color: var(--accent); }
     .input-field::placeholder { color: var(--muted); }
-
     textarea.input-field { resize: vertical; min-height: 72px; line-height: 1.6; }
-
     .settings-footer { padding: 0 16px 16px; flex-shrink: 0; }
-
-    /* ── Scrollbar ── */
+    .badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--accent); color: #fff; font-size: 9px; font-weight: 800;
+      border-radius: 10px; padding: 1px 6px; margin-left: 5px; min-width: 18px;
+    }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-    /* ── Loader animation ── */
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
     .loading-text { animation: pulse 1.2s ease infinite; }
-
-    /* ── Stats badge ── */
-    .badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      background: var(--accent); color: #fff;
-      font-size: 9px; font-weight: 800; border-radius: 10px;
-      padding: 1px 6px; margin-left: 5px; min-width: 18px;
-    }
   </style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
   <div class="logo">
     <div class="logo-icon">✦</div>
     <div class="logo-text">Smart<span>Reply</span></div>
+    <span class="outlook-badge offline" id="modeBadge">Browser mode</span>
   </div>
-  <div class="header-actions">
-    <button class="btn-icon" id="refreshBtn" title="Reload email">↺ Reload</button>
-  </div>
+  <button class="btn-icon" id="refreshBtn">↺ Reload</button>
 </div>
 
-<!-- Tabs -->
 <div class="tabs">
   <div class="tab active" data-tab="compose">✦ Compose</div>
   <div class="tab" data-tab="library">Library <span class="badge" id="libCount">0</span></div>
   <div class="tab" data-tab="settings">Settings</div>
 </div>
 
-<!-- ═══════════════ COMPOSE PANEL ═══════════════ -->
+<!-- COMPOSE -->
 <div class="panel active" id="panel-compose">
   <div class="compose-body">
 
     <div>
       <div class="section-label">Email thread</div>
-      <div class="thread-preview" id="threadPreview">Loading email thread…</div>
+      <div class="thread-box">
+        <div class="thread-preview" id="threadPreview">No email loaded.</div>
+        <textarea class="thread-input" id="threadInput" placeholder="Paste the email here if not in Outlook…" rows="3"></textarea>
+        <div class="thread-hint" id="threadHint">✎ Paste email above or open an email in Outlook</div>
+      </div>
     </div>
 
     <div>
@@ -280,7 +223,7 @@
 
     <div>
       <div class="section-label">AI draft — edit freely</div>
-      <textarea class="reply-box" id="replyBox" placeholder="Click 'Generate reply' to create a draft…"></textarea>
+      <textarea class="reply-box" id="replyBox" placeholder="Click 'Generate' to create a draft…"></textarea>
     </div>
 
   </div>
@@ -289,6 +232,7 @@
     <div class="status-bar" id="statusBar"></div>
     <div class="btn-row">
       <button class="btn btn-secondary" id="generateBtn">⚡ Generate</button>
+      <button class="btn btn-copy" id="copyBtn" disabled>⎘ Copy</button>
       <button class="btn btn-success" id="insertBtn" disabled>↩ Insert</button>
     </div>
     <div class="btn-row">
@@ -297,43 +241,33 @@
   </div>
 </div>
 
-<!-- ═══════════════ LIBRARY PANEL ═══════════════ -->
+<!-- LIBRARY -->
 <div class="panel" id="panel-library">
-  <div class="library-body" id="libraryBody">
-    <div class="empty-state">
-      <div class="big">📚</div>
-      No saved replies yet.<br/>Generate & save replies to build<br/>your personal style database.
-    </div>
-  </div>
+  <div class="library-body" id="libraryBody"></div>
 </div>
 
-<!-- ═══════════════ SETTINGS PANEL ═══════════════ -->
+<!-- SETTINGS -->
 <div class="panel" id="panel-settings">
   <div class="settings-body">
-
     <div class="setting-group">
       <div class="setting-label">Anthropic API Key</div>
-      <div class="setting-hint">Get yours at console.anthropic.com — stored locally, never sent anywhere except Anthropic.</div>
+      <div class="setting-hint">Get yours at console.anthropic.com — stored locally in your browser only.</div>
       <input class="input-field" type="password" id="apiKeyInput" placeholder="sk-ant-api…"/>
     </div>
-
     <div class="setting-group">
-      <div class="setting-label">Your name / sign-off</div>
-      <div class="setting-hint">Used to sign replies automatically.</div>
+      <div class="setting-label">Your sign-off</div>
+      <div class="setting-hint">Added automatically at the end of every reply.</div>
       <input class="input-field" type="text" id="signoffInput" placeholder="Best regards, Alex"/>
     </div>
-
     <div class="setting-group">
       <div class="setting-label">Custom instructions</div>
-      <div class="setting-hint">Tell the AI about your role, company, writing rules, or anything it should always keep in mind.</div>
-      <textarea class="input-field" id="instructionsInput" placeholder="e.g. I'm a sales manager at Acme Corp. Keep replies under 5 sentences. Never promise delivery dates without confirming first."></textarea>
+      <div class="setting-hint">Role, company, tone rules, things to never say, etc.</div>
+      <textarea class="input-field" id="instructionsInput" placeholder="e.g. I'm a sales manager at Acme Corp. Keep replies under 5 sentences. Never promise deadlines."></textarea>
     </div>
-
     <div class="setting-group">
-      <div class="setting-label">Library size</div>
-      <div class="setting-hint" id="libStats">0 saved examples · 0 KB used</div>
+      <div class="setting-label">Library</div>
+      <div class="setting-hint" id="libStats">0 saved examples · 0 KB</div>
     </div>
-
   </div>
   <div class="settings-footer">
     <button class="btn btn-primary" id="saveSettingsBtn" style="width:100%">Save settings</button>
@@ -341,61 +275,63 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════
+// ── State ──────────────────────────────────
 let currentTone = 'Professional';
 let currentThread = '';
-let currentSubject = '';
+let currentSubject = '(no subject)';
 let settings = { apiKey: '', signoff: '', instructions: '' };
+let isOutlook = false;
 const DB_KEY = 'smartreply_examples';
 
-// ═══════════════════════════════════════════
-//  OFFICE.JS INIT
-// ═══════════════════════════════════════════
-Office.onReady(info => {
-  if (info.host === Office.HostType.Outlook) {
-    loadSettings();
-    loadThread();
-    renderLibrary();
-    bindEvents();
+// ── Boot ───────────────────────────────────
+function init() {
+  loadSettings();
+  renderLibrary();
+  bindEvents();
+  updateLibStats();
+
+  // Try Office.js — if not available, run in browser mode
+  if (typeof Office !== 'undefined') {
+    Office.onReady(info => {
+      if (info.host === Office.HostType.Outlook) {
+        isOutlook = true;
+        document.getElementById('modeBadge').textContent = 'Outlook connected';
+        document.getElementById('modeBadge').classList.remove('offline');
+        document.getElementById('threadHint').textContent = '✓ Email loaded from Outlook';
+        loadThreadFromOutlook();
+      }
+    });
   }
-});
+}
 
-// ═══════════════════════════════════════════
-//  EMAIL THREAD READING
-// ═══════════════════════════════════════════
-function loadThread() {
+// ── Thread loading ─────────────────────────
+function loadThreadFromOutlook() {
   const item = Office.context.mailbox.item;
-  if (!item) { setThreadPreview('No email selected.'); return; }
-
+  if (!item) return;
   currentSubject = item.subject || '(no subject)';
-
-  // Get body
   item.body.getAsync(Office.CoercionType.Text, result => {
     if (result.status === Office.AsyncResultStatus.Succeeded) {
-      const bodyText = result.value.trim().slice(0, 3000); // cap at 3k chars
-      currentThread = `Subject: ${currentSubject}\n\n${bodyText}`;
-      setThreadPreview(currentThread);
-    } else {
-      setThreadPreview('Could not read email body.');
+      const body = result.value.trim().slice(0, 3000);
+      currentThread = `Subject: ${currentSubject}\n\n${body}`;
+      const el = document.getElementById('threadPreview');
+      el.textContent = currentThread;
+      el.classList.add('loaded');
+      document.getElementById('threadHint').textContent = '✓ Email loaded from Outlook — or paste override below';
     }
   });
 }
 
-function setThreadPreview(text) {
-  const el = document.getElementById('threadPreview');
-  el.textContent = text;
-  if (text && text.length > 20) el.classList.add('loaded');
+function getActiveThread() {
+  // Manual paste overrides Outlook thread if user typed something
+  const manual = document.getElementById('threadInput').value.trim();
+  return manual || currentThread;
 }
 
-// ═══════════════════════════════════════════
-//  SETTINGS (localStorage)
-// ═══════════════════════════════════════════
+// ── Settings ───────────────────────────────
 function loadSettings() {
   try {
     const s = localStorage.getItem('smartreply_settings');
-    if (s) settings = JSON.parse(s);
+    if (s) settings = { ...settings, ...JSON.parse(s) };
     document.getElementById('apiKeyInput').value = settings.apiKey || '';
     document.getElementById('signoffInput').value = settings.signoff || '';
     document.getElementById('instructionsInput').value = settings.instructions || '';
@@ -411,126 +347,95 @@ function saveSettings() {
   updateLibStats();
 }
 
-// ═══════════════════════════════════════════
-//  LIBRARY (IndexedDB-like via localStorage)
-// ═══════════════════════════════════════════
+// ── Library ────────────────────────────────
 function getExamples() {
-  try {
-    const raw = localStorage.getItem(DB_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch(e) { return []; }
+  try { return JSON.parse(localStorage.getItem(DB_KEY) || '[]'); } catch(e) { return []; }
 }
 
-function saveExamples(examples) {
-  localStorage.setItem(DB_KEY, JSON.stringify(examples));
-}
+function saveExamples(ex) { localStorage.setItem(DB_KEY, JSON.stringify(ex)); }
 
 function addExample(subject, tone, reply) {
-  const examples = getExamples();
-  examples.unshift({
-    id: Date.now(),
-    subject: subject.slice(0, 80),
-    tone,
-    reply,
-    date: new Date().toLocaleDateString('en-GB')
-  });
-  // Keep max 50 examples
-  if (examples.length > 50) examples.splice(50);
-  saveExamples(examples);
+  const ex = getExamples();
+  ex.unshift({ id: Date.now(), subject: subject.slice(0, 80), tone, reply, date: new Date().toLocaleDateString('en-GB') });
+  if (ex.length > 50) ex.splice(50);
+  saveExamples(ex);
   renderLibrary();
   updateLibStats();
 }
 
 function deleteExample(id) {
-  const examples = getExamples().filter(e => e.id !== id);
-  saveExamples(examples);
+  saveExamples(getExamples().filter(e => e.id !== id));
   renderLibrary();
   updateLibStats();
 }
 
 function renderLibrary() {
-  const examples = getExamples();
+  const ex = getExamples();
+  document.getElementById('libCount').textContent = ex.length;
   const body = document.getElementById('libraryBody');
-  document.getElementById('libCount').textContent = examples.length;
-
-  if (examples.length === 0) {
-    body.innerHTML = `<div class="empty-state"><div class="big">📚</div>No saved replies yet.<br/>Generate & save replies to build<br/>your personal style database.</div>`;
+  if (ex.length === 0) {
+    body.innerHTML = `<div class="empty-state"><div class="big">📚</div>No saved replies yet.<br/>Generate & approve replies<br/>to build your style database.</div>`;
     return;
   }
-
-  body.innerHTML = examples.map(e => `
-    <div class="example-card" id="card-${e.id}">
+  body.innerHTML = ex.map(e => `
+    <div class="example-card">
       <div class="card-meta">
         <span class="card-tag">${e.tone}</span>
         <span class="card-date">${e.date}</span>
       </div>
-      <div style="font-size:11px;font-weight:600;color:var(--text);margin-top:2px">${e.subject}</div>
+      <div class="card-subject">${e.subject}</div>
       <div class="card-preview">${e.reply}</div>
       <div class="card-actions">
         <button class="card-btn" onclick="useExample(${e.id})">↩ Use</button>
         <button class="card-btn del" onclick="deleteExample(${e.id})">✕ Delete</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function useExample(id) {
   const ex = getExamples().find(e => e.id === id);
   if (!ex) return;
   document.getElementById('replyBox').value = ex.reply;
-  document.getElementById('insertBtn').disabled = false;
+  document.getElementById('insertBtn').disabled = !isOutlook;
+  document.getElementById('copyBtn').disabled = false;
   switchTab('compose');
 }
 
 function updateLibStats() {
-  const examples = getExamples();
-  const size = new Blob([JSON.stringify(examples)]).size;
-  document.getElementById('libStats').textContent =
-    `${examples.length} saved examples · ${(size/1024).toFixed(1)} KB used`;
+  const ex = getExamples();
+  const kb = (new Blob([JSON.stringify(ex)]).size / 1024).toFixed(1);
+  document.getElementById('libStats').textContent = `${ex.length} saved examples · ${kb} KB used`;
 }
 
-// ═══════════════════════════════════════════
-//  AI GENERATION
-// ═══════════════════════════════════════════
+// ── AI generation ──────────────────────────
 async function generateReply() {
-  if (!settings.apiKey) {
-    setStatus('⚠ Add your API key in Settings first', 'err'); return;
-  }
-  if (!currentThread) {
-    setStatus('⚠ No email thread loaded', 'err'); return;
-  }
+  if (!settings.apiKey) { setStatus('⚠ Add your API key in Settings first', 'err'); return; }
+  const thread = getActiveThread();
+  if (!thread) { setStatus('⚠ Paste an email above or open one in Outlook', 'err'); return; }
 
   setStatus('Generating reply…', 'loading');
   document.getElementById('generateBtn').disabled = true;
   document.getElementById('replyBox').value = '';
   document.getElementById('insertBtn').disabled = true;
+  document.getElementById('copyBtn').disabled = true;
   document.getElementById('saveExampleBtn').disabled = true;
 
-  // Build few-shot examples from library
-  const examples = getExamples().slice(0, 6); // use up to 6 recent examples
-  let examplesBlock = '';
-  if (examples.length > 0) {
-    examplesBlock = '\n\nHere are examples of how this person typically replies:\n' +
-      examples.map((e, i) =>
-        `--- Example ${i+1} (${e.tone}) ---\n${e.reply}`
-      ).join('\n\n');
-  }
+  const examples = getExamples().slice(0, 6);
+  const exBlock = examples.length
+    ? '\n\nExamples of how this person replies:\n' + examples.map((e,i) => `--- Example ${i+1} (${e.tone}) ---\n${e.reply}`).join('\n\n')
+    : '';
 
-  const systemPrompt = `You are an expert email assistant. Write professional email replies that match the user's personal style.
+  const system = `You are an expert email assistant. Write replies matching the user's personal style.
 ${settings.instructions ? '\nUser instructions:\n' + settings.instructions : ''}
-${settings.signoff ? `\nAlways sign off with: ${settings.signoff}` : ''}
-${examplesBlock}
+${settings.signoff ? `\nSign off with: ${settings.signoff}` : ''}
+${exBlock}
 
 Rules:
-- Be concise and direct
-- Match the requested tone exactly
-- Do not add any preamble like "Here is a reply:" — output ONLY the email reply text
-- Do not wrap in quotes or markdown`;
-
-  const userPrompt = `Write a ${currentTone} reply to this email thread:\n\n${currentThread}`;
+- Output ONLY the email reply text, no preamble, no markdown
+- Be concise, match the requested tone exactly`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -541,43 +446,51 @@ Rules:
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userPrompt }]
+        system,
+        messages: [{ role: 'user', content: `Write a ${currentTone} reply to this email:\n\n${thread}` }]
       })
     });
 
-    const data = await response.json();
-
+    const data = await res.json();
     if (data.error) {
       setStatus(`Error: ${data.error.message}`, 'err');
     } else {
       const reply = data.content.map(b => b.text || '').join('').trim();
       document.getElementById('replyBox').value = reply;
-      document.getElementById('insertBtn').disabled = false;
+      document.getElementById('copyBtn').disabled = false;
+      document.getElementById('insertBtn').disabled = !isOutlook;
       document.getElementById('saveExampleBtn').disabled = false;
       setStatus('Reply ready — edit before sending ✓', 'ok');
     }
   } catch(err) {
     setStatus(`Network error: ${err.message}`, 'err');
   }
-
   document.getElementById('generateBtn').disabled = false;
 }
 
-// ═══════════════════════════════════════════
-//  INSERT INTO OUTLOOK
-// ═══════════════════════════════════════════
+// ── Insert / Copy ──────────────────────────
 function insertReply() {
   const text = document.getElementById('replyBox').value.trim();
-  if (!text) return;
-
+  if (!text || !isOutlook) return;
   Office.context.mailbox.item.displayReplyForm({ htmlBody: text.replace(/\n/g, '<br/>') });
-  setStatus('Reply opened in compose window ✓', 'ok');
+  setStatus('Reply opened in Outlook compose ✓', 'ok');
 }
 
-// ═══════════════════════════════════════════
-//  UI HELPERS
-// ═══════════════════════════════════════════
+function copyReply() {
+  const text = document.getElementById('replyBox').value.trim();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    setStatus('Copied to clipboard ✓', 'ok');
+  }).catch(() => {
+    // Fallback
+    const el = document.getElementById('replyBox');
+    el.select();
+    document.execCommand('copy');
+    setStatus('Copied ✓', 'ok');
+  });
+}
+
+// ── UI helpers ─────────────────────────────
 function setStatus(msg, type = '') {
   const el = document.getElementById('statusBar');
   el.textContent = msg;
@@ -589,11 +502,8 @@ function switchTab(name) {
   document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
 }
 
-// ═══════════════════════════════════════════
-//  EVENT BINDING
-// ═══════════════════════════════════════════
+// ── Events ─────────────────────────────────
 function bindEvents() {
-  // Tabs
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       switchTab(tab.dataset.tab);
@@ -601,8 +511,6 @@ function bindEvents() {
       if (tab.dataset.tab === 'settings') updateLibStats();
     });
   });
-
-  // Tone buttons
   document.querySelectorAll('.tone-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('selected'));
@@ -610,30 +518,32 @@ function bindEvents() {
       currentTone = btn.dataset.tone;
     });
   });
-
-  // Main buttons
   document.getElementById('generateBtn').addEventListener('click', generateReply);
   document.getElementById('insertBtn').addEventListener('click', insertReply);
-  document.getElementById('refreshBtn').addEventListener('click', loadThread);
-
+  document.getElementById('copyBtn').addEventListener('click', copyReply);
+  document.getElementById('refreshBtn').addEventListener('click', () => {
+    if (isOutlook) loadThreadFromOutlook();
+    else setStatus('Open an email in Outlook to auto-load it', '');
+  });
   document.getElementById('saveExampleBtn').addEventListener('click', () => {
     const reply = document.getElementById('replyBox').value.trim();
     if (!reply) return;
-    addExample(currentSubject, currentTone, reply);
+    const subject = document.getElementById('threadInput').value.trim()
+      ? '(manual paste)'
+      : currentSubject;
+    addExample(subject, currentTone, reply);
     setStatus('Saved to library ✓', 'ok');
   });
-
   document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
-
-  // Allow API key entry with Enter
-  document.getElementById('apiKeyInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') saveSettings();
-  });
+  document.getElementById('apiKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') saveSettings(); });
 }
 
 // Expose for inline onclick
 window.useExample = useExample;
 window.deleteExample = deleteExample;
+
+// Start
+init();
 </script>
 </body>
 </html>
